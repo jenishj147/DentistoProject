@@ -240,7 +240,7 @@ function editsubmit() {
       {/* <View style={{flexDirection:'row'}}>
               <Text style={{marginTop:4}}>Gender :</Text>
               <TextInput 
-              placeholder="Edit your Male"
+              placeholder="gender"
               autoCapitalize="none"
               value="male"
               editable={edit}
@@ -253,7 +253,7 @@ function editsubmit() {
 
               <View style={[styles.loginbox1,{marginLeft:5}]}>
           <TextInput
-           placeholder="Edit your Gender"
+           placeholder="Gender"
            autoCapitalize="none"
            value={gender}
            editable={edit}

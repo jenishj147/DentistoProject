@@ -173,7 +173,6 @@ const ScanTeeth = () => {
 <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
 <Ionicons name="md-arrow-back" size={30} color="#230A94"  style={{marginLeft:20}}/>
 </TouchableOpacity>
-<ScrollView horizontal style={{paddingRight:20}}  pagingEnabled={true} >
 
 {/* <View style={{height:200,backgroundColor:Colors.black,borderRadius:15,width:385,margin:20}}>
 
@@ -188,11 +187,11 @@ const ScanTeeth = () => {
 
 </View>  */}
 
-<View style={{height:200,backgroundColor:'yellow',borderRadius:15,width:385,margin:20}}>
+<View style={{height:200,backgroundColor:'yellow',borderRadius:15,width:360,margin:20}}>
 
 
   <Image 
-   source={require('../assets/scanpage1.png')}
+   source={require('../assets/den.jpg')}
    style={{width:"100%",height:"100%",borderRadius:15}}
   />
 
@@ -201,7 +200,7 @@ const ScanTeeth = () => {
 </View> 
 
 
-</ScrollView>
+
 
 </View>
 

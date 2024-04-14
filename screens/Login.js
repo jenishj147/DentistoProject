@@ -38,7 +38,7 @@ export default function Login({navigation}) {
       <View style={styles.logincontainer}> 
       <TextInput
                 style={styles.loginbox}
-                placeholder=" Enter your admin Id"
+                placeholder=" Enter your email"
                 autoCapitalize="none"
                 autoCorrect={false}
                 

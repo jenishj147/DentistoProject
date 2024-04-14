@@ -5,7 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AppointmentCard from '../components/AppointmentCard';
 import { ScrollView } from 'react-native';
 
-const BookAppointment = () => {
+const shopping = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
