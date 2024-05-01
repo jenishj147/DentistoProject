@@ -141,28 +141,65 @@ const CameraPage = ({route}) => {
   };
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let result= await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
       quality: 1,
+      
+
+
+      // const manipResult = await manipulateAsync(
+      //   photo.uri,
+      //   [{ crop: cropData }],
+      //   { compress: 1, format: SaveFormat.PNG }
+      // );
+      // setCapturedPhotos([...capturedPhotos, photo]);
+      // setImageUri(manipResult.photo);
+      // console.log(manipResult.uri);
+      // setModalVisible1(true);
+      // storeImageUri(manipResult.uri);
+      
     });
 
-    if (!result.cancelled) {
-      setSelectedImages([result.uri]);
+    if (!result.canceled) {
+      const photo = result.assets.map(asset => asset.uri);
+      setSelectedImages(...selectedImages,photo);
+      // uploadImagesToDatabase(uris);
+
+      // const manipResult = await manipulateAsync(
+      //   photo.uri,
+      //   [{ crop: cropData }],
+      //   { compress: 1, format: SaveFormat.PNG }
+      // );
+      // setCapturedPhotos([...capturedPhotos, photo]);
+      // setImageUri(manipResult.uri);
+      // console.log(manipResult.uri);
+      // setModalVisible1(true);
+      // storeImageUri(manipResult.uri);
+      
     }
+
+    // if (!result.cancelled) {
+    //   setSelectedImages(result.uri);
+    // }
   };
   //setSelectedImages([...selectedImages, result.uri]);
 
   const toggleFlashMode = () => {
     setFlashMode(
       flashMode === Camera.Constants.FlashMode.off
-        ? Camera.Constants.FlashMode.off
+        ? Camera.Constants.FlashMode.on
         : Camera.Constants.FlashMode.off
     );
   };
 
   const cameraRef = React.useRef(null);
-
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
 
   if (hasPermission === null) {
     return <View />;
@@ -314,10 +351,32 @@ const CameraPage = ({route}) => {
   <View style={{flexDirection:"row-reverse",justifyContent:"space-evenly",margin:10,backgroundColor:"white"}}>
   <TouchableOpacity onPress={toggleFlashMode}>
     <View style={{height:50,width:50,backgroundColor:"#0466CB",borderRadius:100,justifyContent:"center",margin:2}}>
-    <Ionicons name="flashlight-sharp" size={25} color="white"  style={{alignSelf:"center",transform: [{ rotate: '90deg' }]}}/>
+    <Ionicons name={flashMode==Camera.Constants.FlashMode.on ? 'flash' : 'flash-off'} size={25} color="white"  style={{alignSelf:"center",transform: [{ rotate: '90deg' }]}}/>
      
     </View>
     </TouchableOpacity>
+    {/* <View>
+      <Button title="Pick Images" onPress={pickImage}/>
+      {selectedImages.map((imageUri,index)=>(
+        <Image key={index} source={{uri:imageUri}} style={{width:200,height:200}}/>
+      ))}
+    </View>  */}
+
+{/* <View>
+      <Button title="Pick Images" onPress={pickImage} />
+      {selectedImages.map((imageUri, index) => (
+        <Image key={index} source={{ uri: imageUri }} style={{ width: 200, height: 200 }} />
+      ))}
+    </View>
+  */}
+    <TouchableOpacity onPress={pickImage}>
+    <View style={{height:50,width:50,backgroundColor:"#0466CB",borderRadius:100,justifyContent:"center",margin:2}}>
+      {/* <Text style={{color:"white",fontWeight:"bold",alignSelf:"center",fontSize:17}}>Take Picture</Text> */}
+      <Ionicons name="images-outline" size={25} color="white"  style={{alignSelf:"center",transform: [{ rotate: '90deg' }]}}/>
+
+
+    </View>
+    </TouchableOpacity> 
   
 
     <TouchableOpacity onPress={takePicture}>
