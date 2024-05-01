@@ -125,6 +125,7 @@ const printToFile = async (html) => {
   return (
     <View style={{paddingTop:30,flex:1,margin:30}}>
         <Text style={styles.usertext}>Reports</Text>
+        <ScrollView>
 
 
 
@@ -151,7 +152,7 @@ const printToFile = async (html) => {
       ))}
     </>
   )}
-    
+    </ScrollView>
     </View>
   );
 };
