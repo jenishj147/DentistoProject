@@ -9,6 +9,8 @@ import { auth, database } from '../config/firebase'
 import {collection,addDoc,orderBy,query,onSnapshot,setDoc,doc,getDoc,where, updateDoc} from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL ,uploadString,uploadBytes} from "firebase/storage";
 import ResultBox from '../components/ResultBox';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 const Results = ({ route }) => {
   const { front } = route.params;
@@ -19,7 +21,7 @@ const Results = ({ route }) => {
   const [mail,setmail] = useState('');
   const [details,setdetails] = useState('');
   const [phone,setphone] = useState('');
-  const [name,setname] = useState("Logeshwar SB");
+  const [name,setname] = useState("");
   const [blood,setblood] = useState(''); 
   const [habits,sethabits]=useState('');
   const [age,setage]=useState("");
@@ -49,39 +51,75 @@ const Results = ({ route }) => {
   
 
   const currentmail=getAuth()?.currentUser.email;
-  useLayoutEffect(() => {
-    const collectionRef = collection(database, 'Users');
+  // useEffect(() => {
+  //   const collectionRef = collection(database, 'Users');
+  //     const q = query(collectionRef, where("mail", "==", currentmail));
+  //     const unsubscribe = onSnapshot(q, querySnapshot => {
+  //       setdetails(
+  //         querySnapshot.docs.map(doc => 
+  //           (
+  //           {
+  //           mail:doc.data().mail,
+  //           phone: doc.data().mobile,
+  //           name:doc.data().name, 
+  //           age:doc.data().age, 
+  //           habits:doc.data().habits, 
+  //           blood:doc.data().blood, 
+  //           gender:doc.data().gender
+          
+  //         }))
+  //       );
+  //     });        
+  //     setname(details[0]?.name);
+  //     setmail(details[0]?.mail);
+  //     setphone(details[0]?.phone);
+  //     sethabits(details[0]?.habits);
+  //     setage(details[0]?.age);
+  //     setgender(details[0]?.gender);
+  //     setblood(details[0]?.blood);
+    
+  //   return unsubscribe;
+  //   }, 
+    
+  //   []);
+
+
+    useLayoutEffect(() => {
+      const collectionRef = collection(database, 'Users');
       const q = query(collectionRef, where("mail", "==", currentmail));
       const unsubscribe = onSnapshot(q, querySnapshot => {
-        setdetails(
-          querySnapshot.docs.map(doc => 
-            (
-            {
-            mail:doc.data().mail,
-            phone: doc.data().mobile,
-            name:doc.data().name, 
-            age:doc.data().age, 
-            habits:doc.data().habits, 
-            blood:doc.data().blood, 
-            gender:doc.data().gender
-          
-          }))
-        );
-      });        
-      setname(details[0]?.name);
-      setmail(details[0]?.mail);
-      setphone(details[0]?.phone);
-      sethabits(details[0]?.habits);
-      setage(details[0]?.age);
-      setgender(details[0]?.gender);
-      setblood(details[0]?.blood);
+        const userDetails = querySnapshot.docs.map(doc => ({
+          mail: doc.data().mail,
+          phone: doc.data().mobile,
+          name: doc.data().name,
+          age: doc.data().age,
+          habits: doc.data().habits,
+          blood: doc.data().blood,
+          gender: doc.data().gender
+        }));
+        setdetails(userDetails);
+        // Move the state setting logic inside the onSnapshot callback
+        if (userDetails.length > 0) {
+          setname(userDetails[0].name);
+          setmail(userDetails[0].mail);
+          setphone(userDetails[0].phone);
+          sethabits(userDetails[0].habits);
+          setage(userDetails[0].age);
+          setgender(userDetails[0].gender);
+          setblood(userDetails[0].blood);
+        }
+      });
     
-    return unsubscribe;
-    }, 
-    
-    []); 
-    console.log(name);
-
+      return unsubscribe;
+    }, []);
+    console.log(details);
+    console.log(name,"-->");
+    console.log(age);
+    console.log(name,"-->");
+    console.log(age);
+    console.log(details);
+    console.log(age);
+    console.log(details);
 
 
 
@@ -220,18 +258,13 @@ const Results = ({ route }) => {
             <h1 style="font-size: 25px;margin-top: 20px;text-decoration: underline;">REPORT RESULTS</h1>
             ${imagebox}
             <hr>
-            <h1 style="font-size: 25px;margin-top: 20px;text-decoration: underline;">RESULTS SUMMARY</h1>
-            <div>
-                <ul>
-                    <li style="font-size:larger;">Gingivity Occured in Front Teeth</li>
-                    <li style="font-size:larger;">Tooth Decay occured in Molar Teeth Left Side</li>
-                </ul>
-            </div>
+            
+          
             <div style="text-align: center;">
                 <table style="width: 400px; height: 100px; margin: 0 auto;padding-top: 50px;">
                     <tr>
                         <th style="border: 1px solid black;">Accuracy Score: 97%</th>
-                        <th style="width: 200px; border: 1px solid black;">Images Count: 2</th>
+                        <th style="width: 200px; border: 1px solid black;">Images Count: 4</th>
                     </tr>
                 </table>
             </div>
@@ -540,8 +573,8 @@ const Results = ({ route }) => {
                       
 
           <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={true}
+            vertical
+            showsverticalScrollIndicator={true}
            pagingEnabled={true}
            overScrollMode="never"
           >

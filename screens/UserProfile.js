@@ -1,12 +1,17 @@
 import React, { Component,useLayoutEffect, useState,useEffect } from 'react';
-import {StyleSheet,Text,View,Image,Button,TouchableOpacity,TextInput} from 'react-native';
+import {StyleSheet,Text,View,Image,Button,TouchableOpacity,TextInput, ScrollView} from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 import { useNavigation } from '@react-navigation/native';
 import { getAuth,signOut} from "firebase/auth";
 import { FontAwesome } from '@expo/vector-icons';
 import colors from '../Colors';
 import { auth, database } from '../config/firebase'
+import Ionicons from '@expo/vector-icons/Ionicons';
+
+
+
 import {collection,addDoc,orderBy,query,onSnapshot,setDoc,doc,getDoc,where, updateDoc} from 'firebase/firestore';
+import Colors from '../Colors';
 
 
 export default function UserProfile() {
@@ -15,7 +20,7 @@ export default function UserProfile() {
   const [phone,setphone] = useState('');
   const [pass,setpass] = useState('');
   const [name,setname] = useState("Logeshwar SB");
-  const [edit,setedit] = useState(false);
+  const [edit,setedit] = useState(true);
   const [blood,setblood] = useState(''); 
   const [habits,sethabits]=useState('');
   const [age,setage]=useState("");
@@ -65,37 +70,65 @@ console.log(name);
 console.log(mail);
 console.log(phone);
 
-
-
-
 function editsubmit() {
-  useEffect(() => {
-    const collectionRef = collection(database, 'Users');
+  // Ensure all necessary state variables are valid before updating Firestore
+  if (mail && phone && name && age && habits && blood !== undefined && gender !== undefined) {
+      const collectionRef = collection(database, 'Users');
 
-    setDoc(doc(collectionRef, currentmail.split('@')[0]), {
-      mail: mail,
-      phone: phone,
-      name: name,
-      age: age,
-      habits: habits,
-      blood: blood,
-      gender: gender,
-    });
+      // Use try-catch block to handle potential errors
+      try {
+          // Update Firestore document with the new data
+          setDoc(doc(collectionRef, currentmail.split('@')[0]), {
+              mail: mail,
+              phone: phone,
+              name: name,
+              age: age,
+              habits: habits,
+              blood: blood,
+              gender: gender,
+          });
 
-    console.log('Data Uploaded Successfully');
-  }, []); // Empty dependency array means this effect runs once after the initial render
+          console.log('Data Uploaded Successfully');
+      } catch (error) {
+          console.error('Error uploading data to Firestore:', error);
+      }
+  } else {
+      console.error('One or more fields have undefined values.');
+  }
 }
+
+
+
+// function editsubmit() {
+// // useEffect(() => {
+//     const collectionRef = collection(database, 'Users');
+
+//     setDoc(doc(collectionRef, currentmail.split('@')[0]), {
+//       mail: mail,
+//       phone: phone,
+//       name: name,
+//       age: age,
+//       habits: habits,
+//       blood: blood,
+//       gender: gender,
+//     });
+
+//     console.log('Data Uploaded Successfully');
+//   //},[]); // Empty dependency array means this effect runs once after the initial render
+// }
 
 
   return (
     <View style={styles.container}>
-      
-      <View style={styles.navbar}>
-        <Image source={{uri:'https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/rm328-366-tong-08_1.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=6a37204762fdd64612ec2ca289977b5e'}} style={styles.image} />
-      </View>
 
+      {/* <View style={styles.navbar}>
+
+      </View> */}
+<ScrollView>
       
       <View style={{padding:20}}>
+      <Ionicons name="person-circle-outline" size={70} color={Colors.primary} style={{marginTop:5,marginLeft:140}}/>
+
       <View style={{flexDirection:"row",justifyContent:"space-between",marginTop:30}} >
      <Text style={styles.usertext}>User Information</Text>
      {  !edit && 
@@ -194,8 +227,10 @@ function editsubmit() {
           <TextInput
            placeholder='Enter your Mobile'
            autoCapitalize="none"
+
            value={phone}
            editable={edit}
+           inputMode='numeric'
            style={{marginLeft:3}}
            onChangeText={(value)=>setphone(value)}
           
@@ -240,7 +275,7 @@ function editsubmit() {
       {/* <View style={{flexDirection:'row'}}>
               <Text style={{marginTop:4}}>Gender :</Text>
               <TextInput 
-              placeholder="gender"
+              placeholder="Edit your Male"
               autoCapitalize="none"
               value="male"
               editable={edit}
@@ -253,7 +288,7 @@ function editsubmit() {
 
               <View style={[styles.loginbox1,{marginLeft:5}]}>
           <TextInput
-           placeholder="Gender"
+           placeholder="Edit your Gender"
            autoCapitalize="none"
            value={gender}
            editable={edit}
@@ -310,6 +345,7 @@ function editsubmit() {
         </View>
       )}
     </View>
+    </ScrollView>
     </View>
   );
 }
@@ -320,9 +356,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   navbar: {
-    backgroundColor: '#53A1EF',
+    backgroundColor: 'white',
     
-    height: '23%',
+    height: '20%',
     justifyContent: 'center', 
     alignItems: 'center', 
   },

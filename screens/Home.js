@@ -1,9 +1,13 @@
-import React from 'react';
+import React ,{useLayoutEffect,useState}from 'react';
 import { Modal, View, Image, Button,Text,StyleSheet, TouchableOpacity , Dimensions } from 'react-native';
 import Colors from '../Colors';
 import { ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { getAuth,signOut} from "firebase/auth";
+import { auth, database } from '../config/firebase'
+import {collection,addDoc,orderBy,query,onSnapshot,setDoc,doc,getDoc,where, updateDoc} from 'firebase/firestore';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL ,uploadString,uploadBytes} from "firebase/storage";
 
 
 const { width } = Dimensions.get('window');
@@ -11,10 +15,33 @@ const { width } = Dimensions.get('window');
 
 const Home = () => {
   const navigation = useNavigation();
+  const [name,setname]=useState('');
+  
+  const currentmail=getAuth()?.currentUser.email;
+
+  useLayoutEffect(() => {
+    const collectionRef = collection(database, 'Users');
+    const q = query(collectionRef, where("mail", "==", currentmail));
+    const unsubscribe = onSnapshot(q, querySnapshot => {
+      const userDetails = querySnapshot.docs.map(doc => ({
+       
+        name: doc.data().name,
+        
+      }));
+
+      // Move the state setting logic inside the onSnapshot callback
+      if (userDetails.length > 0) {
+        setname(userDetails[0].name);
+      
+      }
+    });
+  
+    return unsubscribe;
+  }, []);
   
   return (
     <ScrollView style={styles.container}>
-      <View
+          <View
       style={{
         height: 113,
         backgroundColor: Colors.primary,
@@ -32,7 +59,7 @@ const Home = () => {
             fontWeight: '300',
           }}
         >
-          
+          Hello!
         </Text>
         <Text
           style={{
@@ -41,7 +68,7 @@ const Home = () => {
             fontWeight: '500',
           }}
         >
-          WELCOME
+          {name}
         </Text>
       </View>
 
@@ -52,6 +79,7 @@ const Home = () => {
         />
       </View>
     </View>
+
 
         {/* <Text style={styles.heading}>Products</Text> */}
 
