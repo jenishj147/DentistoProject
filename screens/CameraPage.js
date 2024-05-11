@@ -83,6 +83,24 @@ const CameraPage = ({route}) => {
     }
   };
 
+  
+
+// const storeImageUri = async uri => {
+//   try {
+//     // Retrieve existing image URIs from AsyncStorage
+//     const existingUrisString = await AsyncStorage.getItem(imagetype["imagetype"]);
+//     const existingUris = existingUrisString ? JSON.parse(existingUrisString) : [];
+
+//     // Add the new URI to the existing array
+//     const updatedUris = [...existingUris, uri];
+
+//     // Store the updated array as a string
+//     await AsyncStorage.setItem(imagetype["imagetype"], JSON.stringify(updatedUris));
+//     console.log("Done....")
+//   } catch (error) {
+//     console.error('Error storing imageUri:', error);
+//   }
+// };
 
   
 
@@ -118,6 +136,7 @@ const CameraPage = ({route}) => {
     // Calculate the origin (X, Y) to center the crop around the image
     const originX = (photo.width - desiredWidth)/2;
     const originY = (photo.height - desiredHeight)/2;
+   
     const cropData = {
       height: desiredHeight, // Set the desired height
       originX,  // Set the starting X coordinate for the crop
@@ -132,7 +151,8 @@ const CameraPage = ({route}) => {
       );
       setCapturedPhotos([...capturedPhotos, photo]);
       setImageUri(manipResult.uri);
-      console.log(manipResult.uri);
+      console.log(typeof manipResult.uri,originX,originY,"---.");
+      console.log(originX,originY);
       setModalVisible1(true);
       storeImageUri(manipResult.uri);
       
@@ -141,48 +161,37 @@ const CameraPage = ({route}) => {
   };
 
   const pickImage = async () => {
-    let result= await ImagePicker.launchImageLibraryAsync({
+    let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
       quality: 1,
-      
-
-
-      // const manipResult = await manipulateAsync(
-      //   photo.uri,
-      //   [{ crop: cropData }],
-      //   { compress: 1, format: SaveFormat.PNG }
-      // );
-      // setCapturedPhotos([...capturedPhotos, photo]);
-      // setImageUri(manipResult.photo);
-      // console.log(manipResult.uri);
-      // setModalVisible1(true);
-      // storeImageUri(manipResult.uri);
-      
     });
-
+  
     if (!result.canceled) {
-      const photo = result.assets.map(asset => asset.uri);
-      setSelectedImages(...selectedImages,photo);
-      // uploadImagesToDatabase(uris);
-
-      // const manipResult = await manipulateAsync(
-      //   photo.uri,
-      //   [{ crop: cropData }],
-      //   { compress: 1, format: SaveFormat.PNG }
-      // );
-      // setCapturedPhotos([...capturedPhotos, photo]);
-      // setImageUri(manipResult.uri);
-      // console.log(manipResult.uri);
-      // setModalVisible1(true);
-      // storeImageUri(manipResult.uri);
-      
+      const photo = result.assets[0].uri;
+  
+      // // Define desired dimensions for cropping
+      // desiredWidth = 2200
+      // desiredHeight = 1200
+  
+      // // Calculate the origin (X, Y) to center the crop around the image
+      // const originX = Math.abs(width - desiredWidth) / 2;
+      // const originY = height;
+      // console.log(originX,originY);
+      // const cropData = {
+      //   height: desiredHeight,
+      //   originX,
+      //   originY,
+      //   width: desiredWidth,
+      // };
+  
+      setImageUri(photo);
+      console.log(photo);
+      setModalVisible1(true);
+      storeImageUri(photo);
     }
-
-    // if (!result.cancelled) {
-    //   setSelectedImages(result.uri);
-    // }
   };
+  
   //setSelectedImages([...selectedImages, result.uri]);
 
   const toggleFlashMode = () => {

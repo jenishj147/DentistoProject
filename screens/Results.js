@@ -582,7 +582,7 @@ const Results = ({ route }) => {
 <View
   style={{
     width: 380,
-    height: 400,
+    height: 200,
     borderRadius: 10,
     backgroundColor: Colors.primary, // Use your color here
     marginTop: 30,
@@ -651,45 +651,8 @@ const Results = ({ route }) => {
 
     
   </View>
-  <Text style={{fontSize: 20 ,fontWeight: "bold", color: "white",marginTop:15,marginLeft:5}}>Issues Addressed</Text>
 
-  <View style={{flexDirection:"row",marginTop:20,flexWrap:'wrap'}}>
-
-  <View style={{width:100,height:30,backgroundColor:"#87bdf4",borderRadius:20,justifyContent:"center",alignItems:"center",marginRight:10,marginBottom:10}}>
-
-    <Text style={{color:"white"}}>Stains</Text>
-
-  </View>
-
-  <View style={{width:100,height:30,backgroundColor:"#87bdf4",borderRadius:20,justifyContent:"center",alignItems:"center",marginRight:10,marginBottom:10}}>
-
-        <Text style={{color:"white"}}>Gingivities</Text>
-
-  </View>
-
-  <View style={{width:100,height:30,backgroundColor:"#87bdf4",borderRadius:20,justifyContent:"center",alignItems:"center",marginRight:10,marginBottom:10}}>
-
-  <Text style={{color:"white"}}>Teeth Caries</Text>
-
-  </View>
-
-  <View style={{width:100,height:30,backgroundColor:"#87bdf4",borderRadius:20,justifyContent:"center",alignItems:"center",marginRight:10,marginBottom:10}}>
-
-  <Text style={{color:"white"}}>Discoloration</Text>
-
-  </View>
-
-  <View style={{width:100,height:30,backgroundColor:"#87bdf4",borderRadius:20,justifyContent:"center",alignItems:"center",marginRight:10,marginBottom:10}}>
-
-  <Text style={{color:"white"}}>Ulcer</Text>
-
-  </View> 
-
-  <View style={{width:100,height:30,backgroundColor:"#87bdf4",borderRadius:20,justifyContent:"center",alignItems:"center",marginRight:10,marginBottom:10}}>
-
-<Text style={{color:"white"}}>Plaque</Text>
-
-  </View>
+  
 
   {/* <Text>{label}</Text>
 
@@ -701,7 +664,7 @@ const Results = ({ route }) => {
   
 
 
-  </View>
+
 
 </View>
 
